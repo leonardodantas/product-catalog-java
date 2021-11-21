@@ -1,6 +1,6 @@
 package com.br.product.catalog.app.services.impl;
 
-import com.br.product.catalog.app.repositorys.IProductRepository;
+import com.br.product.catalog.app.repositories.IProductRepository;
 import com.br.product.catalog.app.services.IRemoveProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

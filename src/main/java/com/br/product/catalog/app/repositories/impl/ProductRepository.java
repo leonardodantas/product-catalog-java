@@ -1,8 +1,8 @@
-package com.br.product.catalog.app.repositorys.impl;
+package com.br.product.catalog.app.repositories.impl;
 
-import com.br.product.catalog.app.models.entitys.Product;
-import com.br.product.catalog.app.repositorys.IProductRepository;
-import com.br.product.catalog.app.repositorys.ProductSpringData;
+import com.br.product.catalog.app.models.entities.Product;
+import com.br.product.catalog.app.repositories.IProductRepository;
+import com.br.product.catalog.app.repositories.ProductSpringData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;

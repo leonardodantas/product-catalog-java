@@ -1,6 +1,6 @@
 package com.br.product.catalog.app.models.response;
 
-import com.br.product.catalog.app.models.entitys.Product;
+import com.br.product.catalog.app.models.entities.Product;
 import lombok.Getter;
 
 @Getter
