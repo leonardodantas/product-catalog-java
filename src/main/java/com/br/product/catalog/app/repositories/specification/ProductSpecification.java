@@ -1,35 +1,54 @@
 package com.br.product.catalog.app.repositories.specification;
 
 import com.br.product.catalog.app.models.entities.Product;
+import com.br.product.catalog.app.models.request.ProductRequestFilter;
+import com.google.common.base.Strings;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+public abstract class ProductSpecification {
 
-public class ProductSpecification implements Specification<Product> {
-
-    private SearchProduct searchProduct;
-
-    private ProductSpecification(SearchProduct searchProduct) {
-        this.searchProduct = searchProduct;
+    public static Specification<Product> filter(ProductRequestFilter productFilter) {
+        return Specification.where(equalsName(productFilter.getNameOrDescription()))
+                .or(equalsDescription(productFilter.getNameOrDescription()))
+                .and(greaterThanOrEqualTo(productFilter.getMinPrice()))
+                .and(lessThanOrEqualTo(productFilter.getMaxPrice()));
     }
 
-    @Override
-    public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        if (searchProduct.getOperation().equals(Operations.EQUALS)) {
-            return  criteriaBuilder.like(
-                    criteriaBuilder.upper(root.<String>get(searchProduct.getKey())), searchProduct.getValue().toUpperCase());
-        } else if(searchProduct.getOperation().equals(Operations.GREATERTHANOREQUALSTO)) {
-            return  criteriaBuilder.greaterThanOrEqualTo(root.<String>get(searchProduct.getKey()), searchProduct.getValue());
-        } else if(searchProduct.getOperation().equals(Operations.LESSTHANOREQUALSTO)) {
-            return  criteriaBuilder.lessThanOrEqualTo(root.<String>get(searchProduct.getKey()), searchProduct.getValue());
-        }
-        return null;
+    private static Specification<Product> equalsName(String name) {
+        return (root, query, criteriaBuilder) -> {
+            if(Strings.isNullOrEmpty(name)) {
+                return criteriaBuilder.conjunction();
+            }
+            return criteriaBuilder.equal(
+                    criteriaBuilder.upper(root.<String>get(SQLName.NAME.getField())), name.toUpperCase());
+        };
     }
 
-    public static ProductSpecification from(SearchProduct searchProduct) {
-        return new ProductSpecification(searchProduct);
+    private static Specification<Product> equalsDescription(String description) {
+        return (root, query, criteriaBuilder) -> {
+            if(Strings.isNullOrEmpty(description)) {
+                return criteriaBuilder.conjunction();
+            }
+            return criteriaBuilder.equal(
+                    criteriaBuilder.upper(root.<String>get(SQLName.DESCRIPTION.getField())), description.toUpperCase());
+        };
+    }
+
+    private static Specification<Product> greaterThanOrEqualTo(String min) {
+        return (root, query, criteriaBuilder) -> {
+            if(Strings.isNullOrEmpty(min)) {
+                return criteriaBuilder.conjunction();
+            }
+            return criteriaBuilder.greaterThanOrEqualTo(root.get(SQLName.PRICE.getField()), Double.parseDouble(min));
+        };
+    }
+
+    private static Specification<Product> lessThanOrEqualTo(String max) {
+        return (root, query, criteriaBuilder) -> {
+            if(Strings.isNullOrEmpty(max)) {
+                return criteriaBuilder.conjunction();
+            }
+            return criteriaBuilder.lessThanOrEqualTo(root.get(SQLName.PRICE.getField()), Double.parseDouble(max));
+        };
     }
 }

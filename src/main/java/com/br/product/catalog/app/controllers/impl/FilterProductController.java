@@ -1,6 +1,7 @@
 package com.br.product.catalog.app.controllers.impl;
 
 import com.br.product.catalog.app.controllers.IFilterProductController;
+import com.br.product.catalog.app.models.request.ProductRequestFilter;
 import com.br.product.catalog.app.models.response.ProductResponseDTO;
 import com.br.product.catalog.app.services.IFilterProductService;
 import io.swagger.annotations.Api;
@@ -19,8 +20,10 @@ public class FilterProductController implements IFilterProductController {
     private IFilterProductService filterProductService;
 
     @Override
-    public ResponseEntity<?> filterProducts(String descriptionOrName, String minPrice, String maxPrice) {
-        List<ProductResponseDTO> response = filterProductService.filterProducts(descriptionOrName, minPrice, maxPrice);
+    public ResponseEntity<?> filterProducts(String nameOrDescription, String minPrice, String maxPrice) {
+        List<ProductResponseDTO> response = filterProductService
+                .filterProducts(ProductRequestFilter.builder().nameOrDescription(nameOrDescription).minPrice(minPrice).maxPrice(maxPrice)
+                        .build());
         return ResponseEntity.ok(response);
     }
 }

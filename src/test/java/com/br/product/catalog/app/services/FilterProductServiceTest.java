@@ -2,6 +2,7 @@ package com.br.product.catalog.app.services;
 
 import com.br.product.catalog.app.models.entities.Product;
 import com.br.product.catalog.app.models.request.ProductRequestDTO;
+import com.br.product.catalog.app.models.request.ProductRequestFilter;
 import com.br.product.catalog.app.models.response.ProductResponseDTO;
 import com.br.product.catalog.app.repositories.IProductRepository;
 import com.br.product.catalog.app.services.impl.FilterProductService;
@@ -32,8 +33,7 @@ public class FilterProductServiceTest {
         String maxPrice = "200";
 
         List<Product> products = createProducts();
-
-        List<ProductResponseDTO> allProducts = filterProductService.filterProducts(descriptionOrName, minPrice, maxPrice);
+        List<ProductResponseDTO> allProducts = filterProductService.filterProducts(ProductRequestFilter.builder().nameOrDescription(descriptionOrName).minPrice(minPrice).maxPrice(maxPrice).build());
 
         assertNotNull(allProducts);
     }
