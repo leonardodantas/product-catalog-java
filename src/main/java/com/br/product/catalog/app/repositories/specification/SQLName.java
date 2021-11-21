@@ -1,4 +1,4 @@
-package com.br.product.catalog.app.repositorys.specification;
+package com.br.product.catalog.app.repositories.specification;
 
 public enum SQLName {
 

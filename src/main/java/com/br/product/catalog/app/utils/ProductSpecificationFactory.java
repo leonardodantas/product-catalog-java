@@ -1,10 +1,10 @@
 package com.br.product.catalog.app.utils;
 
-import com.br.product.catalog.app.models.entitys.Product;
-import com.br.product.catalog.app.repositorys.specification.Operations;
-import com.br.product.catalog.app.repositorys.specification.ProductSpecificationBuilder;
-import com.br.product.catalog.app.repositorys.specification.SQLName;
-import com.br.product.catalog.app.repositorys.specification.TypeSpecification;
+import com.br.product.catalog.app.models.entities.Product;
+import com.br.product.catalog.app.repositories.specification.Operations;
+import com.br.product.catalog.app.repositories.specification.ProductSpecificationBuilder;
+import com.br.product.catalog.app.repositories.specification.SQLName;
+import com.br.product.catalog.app.repositories.specification.TypeSpecification;
 import org.springframework.data.jpa.domain.Specification;
 
 public class ProductSpecificationFactory {

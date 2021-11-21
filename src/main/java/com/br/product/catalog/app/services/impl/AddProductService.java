@@ -1,9 +1,9 @@
 package com.br.product.catalog.app.services.impl;
 
-import com.br.product.catalog.app.models.entitys.Product;
+import com.br.product.catalog.app.models.entities.Product;
 import com.br.product.catalog.app.models.request.ProductRequestDTO;
 import com.br.product.catalog.app.models.response.ProductResponseDTO;
-import com.br.product.catalog.app.repositorys.IProductRepository;
+import com.br.product.catalog.app.repositories.IProductRepository;
 import com.br.product.catalog.app.services.IAddProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

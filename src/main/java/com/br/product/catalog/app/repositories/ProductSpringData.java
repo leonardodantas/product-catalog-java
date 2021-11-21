@@ -1,6 +1,6 @@
-package com.br.product.catalog.app.repositorys;
+package com.br.product.catalog.app.repositories;
 
-import com.br.product.catalog.app.models.entitys.Product;
+import com.br.product.catalog.app.models.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

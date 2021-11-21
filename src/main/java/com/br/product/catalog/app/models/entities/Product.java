@@ -1,4 +1,4 @@
-package com.br.product.catalog.app.models.entitys;
+package com.br.product.catalog.app.models.entities;
 
 import com.br.product.catalog.app.models.request.ProductRequestDTO;
 import lombok.Getter;

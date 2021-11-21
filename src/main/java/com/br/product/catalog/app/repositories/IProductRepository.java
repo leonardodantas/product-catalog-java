@@ -1,7 +1,6 @@
-package com.br.product.catalog.app.repositorys;
+package com.br.product.catalog.app.repositories;
 
-import com.br.product.catalog.app.models.entitys.Product;
-import com.br.product.catalog.app.repositorys.specification.ProductSpecification;
+import com.br.product.catalog.app.models.entities.Product;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;

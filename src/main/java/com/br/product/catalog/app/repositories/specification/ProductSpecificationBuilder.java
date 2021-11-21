@@ -1,6 +1,6 @@
-package com.br.product.catalog.app.repositorys.specification;
+package com.br.product.catalog.app.repositories.specification;
 
-import com.br.product.catalog.app.models.entitys.Product;
+import com.br.product.catalog.app.models.entities.Product;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
