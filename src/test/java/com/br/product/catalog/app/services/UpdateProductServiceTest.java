@@ -1,18 +1,15 @@
 package com.br.product.catalog.app.services;
 
 
-import com.br.product.catalog.app.models.entities.Product;
-import com.br.product.catalog.app.models.request.ProductRequestDTO;
-import com.br.product.catalog.app.models.response.ProductResponseDTO;
-import com.br.product.catalog.app.repositories.IProductRepository;
-import com.br.product.catalog.app.services.impl.UpdateProductService;
+import com.br.product.catalog.app.app.repository.IProductRepository;
+import com.br.product.catalog.app.app.usecases.impl.UpdateProduct;
+import com.br.product.catalog.app.domain.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -23,38 +20,39 @@ import static org.mockito.Mockito.when;
 public class UpdateProductServiceTest {
 
     @InjectMocks
-    private UpdateProductService updateProductService;
+    private UpdateProduct updateProductService;
 
     @Mock
     private IProductRepository productRepository;
 
     @Test
     public void testUpdateProduct() {
-        ProductRequestDTO product = new ProductRequestDTO("Celular", "Dispositivo", 5000);
-        String id = "45454ddasd-dasdad54";
-        Product productSave = Product.from(product);
+        final var id = "45454ddasd-dasdad54";
+        final var productExist = new Product(id, "Notebook", "Dell", 5000);
 
         when(productRepository.findById(id))
-                .thenReturn(Optional.of(productSave));
+                .thenReturn(Optional.of(productExist));
+
+        final var productUpdate = new Product(id, "Notebook Dell", "Alta performace", 6000);
 
         when(productRepository.save(Mockito.any(Product.class)))
-                .thenReturn(productSave);
+                .thenReturn(productUpdate);
 
-        ProductResponseDTO productResponseDTO = updateProductService.updateProduct(product, id);
+        final var productSave = updateProductService.execute(id, productExist);
 
-        assertEquals(productSave.getId(), productResponseDTO.getId());
-        assertEquals(productSave.getDescription(), productResponseDTO.getDescription());
-        assertEquals(productSave.getName(), productResponseDTO.getName());
+        assertEquals(productUpdate.getId(), productSave.getId());
+        assertEquals(productUpdate.getDescription(), productSave.getDescription());
+        assertEquals(productUpdate.getName(), productSave.getName());
     }
-    @Test(expected = ResponseStatusException.class)
+
+    @Test(expected = RuntimeException.class)
     public void testUpdateProductWhereUserNotExist() {
-        ProductRequestDTO product = new ProductRequestDTO("Celular", "Dispositivo", 5000);
-        String id = "45454ddasd-dasdad54";
+        final var id = "45454ddasd-dasdad54";
 
         when(productRepository.findById(id))
                 .thenReturn(Optional.empty());
 
-        updateProductService.updateProduct(product,id);
+        updateProductService.execute(id, new Product());
     }
 
 }

@@ -1,10 +1,8 @@
 package com.br.product.catalog.app.services;
 
-import com.br.product.catalog.app.models.entities.Product;
-import com.br.product.catalog.app.models.request.ProductRequestDTO;
-import com.br.product.catalog.app.models.response.ProductResponseDTO;
-import com.br.product.catalog.app.repositories.IProductRepository;
-import com.br.product.catalog.app.services.impl.AddProductService;
+import com.br.product.catalog.app.app.repository.IProductRepository;
+import com.br.product.catalog.app.app.usecases.impl.AddProduct;
+import com.br.product.catalog.app.domain.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -19,23 +17,21 @@ import static org.mockito.Mockito.when;
 public class AddProductServiceTest {
 
     @InjectMocks
-    private AddProductService addProductService;
+    private AddProduct addProductService;
 
     @Mock
     private IProductRepository productRepository;
 
     @Test
-    public void testAddProduct(){
-        ProductRequestDTO product = new ProductRequestDTO("Celular", "Dispositivo", 5000);
-
-        Product productSave = Product.from(product);
+    public void testAddProduct() {
+        final var productToSave = new Product("1", "Notebook", "Dell", 5000);
         when(productRepository.save(Mockito.any(Product.class)))
-                .thenReturn(productSave);
+                .thenReturn(productToSave);
 
-        ProductResponseDTO productResponseDTO = addProductService.addProduct(product);
+        final var product = addProductService.execute(productToSave);
 
-        assertEquals(productSave.getId(), productResponseDTO.getId());
-        assertEquals(productSave.getDescription(), productResponseDTO.getDescription());
-        assertEquals(productSave.getName(), productResponseDTO.getName());
+        assertEquals(productToSave.getId(), product.getId());
+        assertEquals(productToSave.getDescription(), product.getDescription());
+        assertEquals(productToSave.getName(), product.getName());
     }
 }

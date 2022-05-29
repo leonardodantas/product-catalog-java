@@ -1,16 +1,14 @@
 package com.br.product.catalog.app.services;
 
-import com.br.product.catalog.app.models.entities.Product;
-import com.br.product.catalog.app.models.request.ProductRequestDTO;
-import com.br.product.catalog.app.repositories.IProductRepository;
-import com.br.product.catalog.app.services.impl.RemoveProductService;
+import com.br.product.catalog.app.app.repository.IProductRepository;
+import com.br.product.catalog.app.app.usecases.impl.RemoveProduct;
+import com.br.product.catalog.app.domain.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -20,34 +18,34 @@ import static org.mockito.Mockito.when;
 public class RemoveProductServiceTest {
 
     @InjectMocks
-    private RemoveProductService removeProductService;
+    private RemoveProduct removeProductService;
 
     @Mock
     private IProductRepository productRepository;
 
     @Test
     public void testRemoveProduct() {
-        String id = "1d5asd8dad-asd54ad";
-        ProductRequestDTO productResquestDTO = new ProductRequestDTO("teste", "teste", 1000);
-        Optional<Product> product = Optional.of(Product.from(productResquestDTO)) ;
+        final var id = "1d5asd8dad-asd54ad";
+
+        Optional<Product> product = Optional.of(new Product());
 
         when(productRepository.findById(id))
                 .thenReturn(product);
 
-        removeProductService.removeProduct(id);
+        removeProductService.execute(id);
 
         Mockito.verify(productRepository, Mockito.times(1)).deleteById(id);
     }
 
-    @Test(expected = ResponseStatusException.class)
+    @Test(expected = RuntimeException.class)
     public void testRemoveProductWhereProductNotExist() {
-        String id = "1d5asd8dad-asd54ad";
-        Optional<Product> product = Optional.empty();
+        final var id = "1d5asd8dad-asd54ad";
+        final Optional<Product> product = Optional.empty();
 
         when(productRepository.findById(id))
                 .thenReturn(product);
 
-        removeProductService.removeProduct(id);
+        removeProductService.execute(id);
 
     }
 }

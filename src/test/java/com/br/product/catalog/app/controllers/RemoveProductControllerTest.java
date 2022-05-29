@@ -1,7 +1,7 @@
 package com.br.product.catalog.app.controllers;
 
-import com.br.product.catalog.app.controllers.impl.RemoveProductController;
-import com.br.product.catalog.app.services.IRemoveProductService;
+import com.br.product.catalog.app.app.usecases.IRemoveProduct;
+import com.br.product.catalog.app.infra.controllers.RemoveProductController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,16 +24,16 @@ public class RemoveProductControllerTest {
     private RemoveProductController removeProductController;
 
     @Mock
-    private IRemoveProductService removeProductService;
+    private IRemoveProduct removeProductService;
 
     @Before
-    public void init(){
+    public void init() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(removeProductController).build();
     }
 
     @Test
     public void testRemoveProduct() throws Exception {
-        String id = "123456";
+        final var id = "123456";
         mockMvc.perform(MockMvcRequestBuilders.delete("/products/" + id)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)

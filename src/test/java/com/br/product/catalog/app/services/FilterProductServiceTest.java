@@ -1,49 +1,49 @@
 package com.br.product.catalog.app.services;
 
-import com.br.product.catalog.app.models.entities.Product;
-import com.br.product.catalog.app.models.request.ProductRequestDTO;
-import com.br.product.catalog.app.models.request.ProductRequestFilter;
-import com.br.product.catalog.app.models.response.ProductResponseDTO;
-import com.br.product.catalog.app.repositories.IProductRepository;
-import com.br.product.catalog.app.services.impl.FilterProductService;
+import com.br.product.catalog.app.app.filters.ProductFilters;
+import com.br.product.catalog.app.app.repository.IProductRepository;
+import com.br.product.catalog.app.app.usecases.impl.FilterProduct;
+import com.br.product.catalog.app.domain.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FilterProductServiceTest {
 
     @InjectMocks
-    private FilterProductService filterProductService;
+    private FilterProduct filterProductService;
 
     @Mock
     private IProductRepository productRepository;
 
     @Test
     public void testFilterProducts() {
-        String descriptionOrName = "Teste";
-        String minPrice = "100";
-        String maxPrice = "200";
+        final var descriptionOrName = "Notebooks";
+        final var minPrice = "100";
+        final var maxPrice = "200";
 
-        List<Product> products = createProducts();
-        List<ProductResponseDTO> allProducts = filterProductService.filterProducts(ProductRequestFilter.builder().nameOrDescription(descriptionOrName).minPrice(minPrice).maxPrice(maxPrice).build());
+        final var products = new ArrayList<Product>();
+        products.add(new Product());
+        products.add(new Product());
+        products.add(new Product());
 
-        assertNotNull(allProducts);
+        when(productRepository.findAll(ArgumentMatchers.any()))
+                .thenReturn(products);
+
+        final var productsFilters = filterProductService.execute(ProductFilters.builder().nameOrDescription(descriptionOrName).minPrice(minPrice).maxPrice(maxPrice).build());
+
+        assertNotNull(productsFilters);
+        assertEquals(3, productsFilters.size());
     }
 
-    private List<Product> createProducts() {
-        List<Product> products = new ArrayList<>();
-        for(int i = 0; i < 10; i++) {
-            ProductRequestDTO productRequestDTO = new ProductRequestDTO("Name " + i, "Description " + i, i * 2);
-            products.add(Product.from(productRequestDTO));
-        }
-        return products;
-    }
 }
